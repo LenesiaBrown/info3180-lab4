@@ -2,13 +2,13 @@
 
 {% block main %}
 <h1>Images</h1>
+<br>
 
-<div class="grid-container">
+<div class="file-images">
     
     {% for image in images %}        
-        <div class="grid-item">
-            <img src="{{ url_for('get_image', filename=image) }}" alt="Image"/>
-            <!-- {{ url_for('get_image', filename=image) }} -->
+        <div class="file-images-items">
+            <img src="{{ url_for('get_image', filename=image) }}" alt="Image"/>            
         </div>        
     {% endfor %}
     

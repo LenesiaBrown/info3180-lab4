@@ -49,7 +49,7 @@ def upload():
         photofile.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         flash('File Saved', 'success')
-        return redirect(url_for('home')) # Update this to redirect the user to a route that displays all uploaded image files
+        return redirect(url_for('files')) # Update this to redirect the user to a route that displays all uploaded image files
 
     return render_template('upload.html', form = photoform)
 
@@ -57,20 +57,12 @@ def upload():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
-
-    # change this to actually validate the entire form submission
-    # and not just one field
-    #if form.username.data:
+    
     if form.validate_on_submit():
         # Get the username and password values from the form.
         formusername = form.username.data
         formpassword = form.password.data
-
-        # Using your model, query database for a user based on the username
-        # and password submitted. Remember you need to compare the password hash.
-        # You will need to import the appropriate function to do so.
-        # Then store the result of that query to a `user` variable so it can be
-        # passed to the login_user() method below.
+        
         user = db.session.execute(db.select(UserProfile).filter_by(username=formusername)).scalar()
 
         if user and check_password_hash(user.password, formpassword):
@@ -90,7 +82,7 @@ def get_image(filename):
 
 
 @app.route('/files')
-# @login_required
+@login_required
 def files():
     images = get_uploaded_images()
     return render_template("files.html", images=images)
